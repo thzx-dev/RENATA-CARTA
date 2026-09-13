@@ -1,0 +1,1651 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para Renata</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html,body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+}
+
+body{
+    background:#090308;
+    font-family:Georgia,"Times New Roman",serif;
+    color:white;
+}
+
+button{
+    font-family:inherit;
+}
+
+#app{
+    width:100vw;
+    height:100dvh;
+    min-height:100vh;
+    position:relative;
+    overflow:hidden;
+    background:
+        radial-gradient(circle at 50% 50%,#451125 0%,#180611 42%,#080207 100%);
+}
+
+/* =========================
+   FUNDO
+========================= */
+
+.glow{
+    position:absolute;
+    width:500px;
+    height:500px;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+    border-radius:50%;
+    background:rgba(255,40,110,.13);
+    filter:blur(100px);
+    animation:glow 5s infinite alternate;
+}
+
+@keyframes glow{
+    from{
+        transform:translate(-50%,-50%) scale(.7);
+    }
+    to{
+        transform:translate(-50%,-50%) scale(1.35);
+    }
+}
+
+.star{
+    position:absolute;
+    width:3px;
+    height:3px;
+    border-radius:50%;
+    background:white;
+    opacity:.5;
+    animation:float 7s linear infinite;
+}
+
+@keyframes float{
+    from{
+        transform:translateY(110vh);
+        opacity:0;
+    }
+    20%{
+        opacity:.7;
+    }
+    to{
+        transform:translateY(-10vh);
+        opacity:0;
+    }
+}
+
+/* =========================
+   MARCA D'ÁGUA
+========================= */
+
+.watermark{
+    position:absolute;
+    bottom:16px;
+    left:50%;
+    transform:translateX(-50%);
+    color:rgba(255,255,255,.28);
+    font-size:11px;
+    letter-spacing:1.5px;
+    white-space:nowrap;
+    z-index:100;
+}
+
+/* =========================
+   CARTA
+========================= */
+
+.card-scene{
+    position:absolute;
+    inset:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    perspective:1200px;
+    z-index:10;
+}
+
+.envelope{
+    width:min(86vw,440px);
+    height:min(62vh,500px);
+    position:relative;
+    background:#f7e7dc;
+    border-radius:5px;
+    box-shadow:
+        0 30px 80px rgba(0,0,0,.65),
+        0 0 50px rgba(255,80,140,.12);
+    transform-style:preserve-3d;
+    transition:2s cubic-bezier(.2,.8,.2,1);
+}
+
+.paper{
+    position:absolute;
+    inset:15px;
+    border:1px solid rgba(100,35,45,.22);
+    border-radius:3px;
+    background:
+        repeating-linear-gradient(
+            0deg,
+            transparent 0px,
+            transparent 31px,
+            rgba(130,60,70,.06) 32px
+        );
+}
+
+.flap{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:52%;
+    background:#f4d9dc;
+    clip-path:polygon(0 0,100% 0,50% 100%);
+    transform-origin:top center;
+    transition:2s cubic-bezier(.2,.8,.2,1);
+    z-index:5;
+}
+
+.corner{
+    position:absolute;
+    width:55px;
+    height:55px;
+    z-index:8;
+}
+
+.corner::before,
+.corner::after{
+    content:"";
+    position:absolute;
+    border:2px solid #a9546d;
+    opacity:.65;
+}
+
+.corner::before{
+    width:30px;
+    height:30px;
+    border-radius:50% 0 50% 0;
+    transform:rotate(25deg);
+}
+
+.corner::after{
+    width:18px;
+    height:18px;
+    border-radius:50%;
+    top:23px;
+    left:25px;
+}
+
+.top-left{
+    top:25px;
+    left:25px;
+}
+
+.top-right{
+    top:25px;
+    right:25px;
+    transform:scaleX(-1);
+}
+
+.bottom-left{
+    bottom:25px;
+    left:25px;
+    transform:scaleY(-1);
+}
+
+.bottom-right{
+    bottom:25px;
+    right:25px;
+    transform:scale(-1);
+}
+
+.branch{
+    position:absolute;
+    width:80px;
+    height:50px;
+    z-index:7;
+}
+
+.branch::before{
+    content:"";
+    position:absolute;
+    width:65px;
+    height:2px;
+    background:#9b5369;
+    transform:rotate(-25deg);
+    top:25px;
+    left:5px;
+}
+
+.branch::after{
+    content:"♥  ♡  ♥";
+    position:absolute;
+    color:#9b5369;
+    font-size:14px;
+    letter-spacing:8px;
+    top:3px;
+    left:5px;
+}
+
+.branch.left{
+    left:25px;
+    top:95px;
+}
+
+.branch.right{
+    right:25px;
+    top:95px;
+    transform:scaleX(-1);
+}
+
+.card-title{
+    position:absolute;
+    inset:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    text-align:center;
+    z-index:3;
+    color:#68263d;
+    font-size:27px;
+    font-style:italic;
+}
+
+.card-title span{
+    display:block;
+    margin-top:12px;
+    font-size:13px;
+    letter-spacing:3px;
+    font-style:normal;
+}
+
+.envelope.open{
+    transform:
+        translateY(-40px)
+        rotateX(65deg)
+        scale(1.15);
+    opacity:0;
+}
+
+.envelope.open .flap{
+    transform:rotateX(-170deg);
+}
+
+/* =========================
+   CORAÇÃO
+========================= */
+
+.heart-wrap{
+    position:absolute;
+    left:50%;
+    top:50%;
+    width:180px;
+    height:180px;
+    transform:translate(-50%,-50%) scale(.1);
+    opacity:0;
+    z-index:20;
+}
+
+.heart-wrap.show{
+    animation:heartAppear 2s forwards;
+}
+
+.heart{
+    position:absolute;
+    width:145px;
+    height:145px;
+    left:18px;
+    top:18px;
+    background:#e91d60;
+    transform:rotate(-45deg);
+    box-shadow:
+        0 0 35px rgba(255,30,100,.8),
+        0 0 100px rgba(255,30,100,.4);
+    animation:beat 1.4s infinite;
+}
+
+.heart:before,
+.heart:after{
+    content:"";
+    position:absolute;
+    width:145px;
+    height:145px;
+    background:#e91d60;
+    border-radius:50%;
+}
+
+.heart:before{
+    top:-72px;
+    left:0;
+}
+
+.heart:after{
+    left:72px;
+    top:0;
+}
+
+@keyframes heartAppear{
+    0%{
+        opacity:0;
+        transform:translate(-50%,-50%) scale(.1);
+    }
+    60%{
+        opacity:1;
+        transform:translate(-50%,-50%) scale(1.1);
+    }
+    100%{
+        opacity:1;
+        transform:translate(-50%,-50%) scale(1);
+    }
+}
+
+@keyframes beat{
+    0%,100%{
+        transform:rotate(-45deg) scale(1);
+    }
+    15%{
+        transform:rotate(-45deg) scale(1.08);
+    }
+    30%{
+        transform:rotate(-45deg) scale(1);
+    }
+    45%{
+        transform:rotate(-45deg) scale(1.06);
+    }
+}
+
+/* =========================
+   ENTRANDO NO CORAÇÃO
+========================= */
+
+.heart-wrap.enter{
+    animation:enterHeart 3.5s cubic-bezier(.7,0,.2,1) forwards;
+}
+
+@keyframes enterHeart{
+    0%{
+        transform:translate(-50%,-50%) scale(1);
+        opacity:1;
+    }
+    25%{
+        transform:translate(-50%,-50%) scale(2);
+    }
+    55%{
+        transform:translate(-50%,-50%) scale(7);
+    }
+    80%{
+        transform:translate(-50%,-50%) scale(25);
+        opacity:1;
+    }
+    100%{
+        transform:translate(-50%,-50%) scale(90);
+        opacity:0;
+    }
+}
+
+/* =========================
+   CONTEÚDO
+========================= */
+
+.content{
+    position:absolute;
+    inset:0;
+    z-index:30;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:25px;
+    pointer-events:none;
+}
+
+.phrase{
+    position:absolute;
+    width:90%;
+    max-width:850px;
+    text-align:center;
+    font-size:clamp(26px,5vw,52px);
+    line-height:1.3;
+    text-shadow:0 5px 35px rgba(0,0,0,.6);
+    opacity:0;
+}
+
+.phrase.show{
+    animation:phraseIn 1.4s forwards;
+}
+
+.phrase.hide{
+    animation:phraseOut 1s forwards;
+}
+
+@keyframes phraseIn{
+    from{
+        opacity:0;
+        transform:translateY(35px) scale(.9);
+        filter:blur(10px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0) scale(1);
+        filter:blur(0);
+    }
+}
+
+@keyframes phraseOut{
+    from{
+        opacity:1;
+        transform:scale(1);
+    }
+    to{
+        opacity:0;
+        transform:scale(1.1);
+        filter:blur(8px);
+    }
+}
+
+/* =========================
+   LISTA
+========================= */
+
+.list-container{
+    position:absolute;
+    width:min(90vw,800px);
+    height:72vh;
+    overflow:hidden;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    opacity:0;
+}
+
+.list-container.show{
+    animation:listAppear 1.5s forwards;
+}
+
+@keyframes listAppear{
+    from{
+        opacity:0;
+        transform:scale(.95);
+        filter:blur(8px);
+    }
+    to{
+        opacity:1;
+        transform:scale(1);
+        filter:blur(0);
+    }
+}
+
+.list-item{
+    position:absolute;
+    width:100%;
+    text-align:center;
+    font-size:clamp(21px,4vw,36px);
+    line-height:1.4;
+    padding:20px;
+    opacity:0;
+    transform:translateY(30px) scale(.94);
+}
+
+.list-item.show{
+    animation:itemIn 1s forwards;
+}
+
+.list-item.hide{
+    animation:itemOut .7s forwards;
+}
+
+@keyframes itemIn{
+    from{
+        opacity:0;
+        transform:translateY(35px) scale(.93);
+        filter:blur(7px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0) scale(1);
+        filter:blur(0);
+    }
+}
+
+@keyframes itemOut{
+    from{
+        opacity:1;
+        transform:translateY(0);
+    }
+    to{
+        opacity:0;
+        transform:translateY(-25px);
+        filter:blur(5px);
+    }
+}
+
+/* =========================
+   FINAL DA LISTA
+========================= */
+
+.final{
+    position:absolute;
+    width:90%;
+    max-width:850px;
+    text-align:center;
+    opacity:0;
+    transform:scale(.8);
+    font-size:clamp(28px,5vw,52px);
+}
+
+.final.show{
+    animation:finalIn 2s forwards;
+}
+
+.final.hide{
+    animation:finalOut 1s forwards;
+}
+
+@keyframes finalIn{
+    from{
+        opacity:0;
+        transform:scale(.75);
+        filter:blur(10px);
+    }
+    to{
+        opacity:1;
+        transform:scale(1);
+        filter:blur(0);
+    }
+}
+
+@keyframes finalOut{
+    from{
+        opacity:1;
+        transform:scale(1);
+    }
+    to{
+        opacity:0;
+        transform:scale(1.08);
+        filter:blur(8px);
+    }
+}
+
+/* =========================
+   BOTÃO INICIAL
+========================= */
+
+.start{
+    position:absolute;
+    z-index:60;
+    left:50%;
+    bottom:70px;
+    transform:translateX(-50%);
+    padding:14px 30px;
+    border-radius:40px;
+    border:1px solid rgba(255,255,255,.4);
+    background:rgba(255,255,255,.08);
+    color:white;
+    backdrop-filter:blur(10px);
+    font-size:16px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.start:hover{
+    background:rgba(255,255,255,.18);
+    transform:translateX(-50%) scale(1.06);
+}
+
+.start.hide{
+    opacity:0;
+    pointer-events:none;
+}
+
+/* =========================
+   TEXTÃO
+========================= */
+
+.long-text{
+    position:absolute;
+    inset:0;
+    z-index:80;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:35px;
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(100,15,45,.96),
+            rgba(8,2,7,.99)
+        );
+    opacity:0;
+    transform:scale(.94);
+    transition:1.4s ease;
+    overflow-y:auto;
+}
+
+.long-text.show{
+    opacity:1;
+    transform:scale(1);
+}
+
+.long-title{
+    font-size:clamp(30px,6vw,58px);
+    margin-bottom:30px;
+    text-shadow:0 0 35px rgba(255,60,130,.5);
+}
+
+.long-content{
+    width:min(90vw,750px);
+    font-size:clamp(18px,3vw,25px);
+    line-height:1.8;
+    color:rgba(255,255,255,.9);
+    white-space:pre-line;
+}
+
+.continue-btn{
+    margin-top:35px;
+    padding:14px 30px;
+    border:none;
+    border-radius:40px;
+    background:#e91d60;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+    box-shadow:0 0 30px rgba(233,29,96,.45);
+    transition:.3s;
+}
+
+.continue-btn:hover{
+    transform:scale(1.06);
+}
+
+/* =========================
+   TELA FINAL
+========================= */
+
+.ending{
+    position:absolute;
+    inset:0;
+    z-index:90;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:30px;
+    background:
+        radial-gradient(
+            circle at center,
+            #451125,
+            #090308 75%
+        );
+    opacity:0;
+    transform:scale(.8);
+    transition:1.5s cubic-bezier(.2,.8,.2,1);
+}
+
+.ending.show{
+    opacity:1;
+    transform:scale(1);
+}
+
+.ending-title{
+    font-size:clamp(34px,7vw,65px);
+    margin-bottom:25px;
+    text-shadow:0 0 35px rgba(255,50,120,.5);
+}
+
+.ending-text{
+    max-width:720px;
+    font-size:clamp(19px,3.5vw,28px);
+    line-height:1.6;
+    color:rgba(255,255,255,.9);
+}
+
+.ending-question{
+    max-width:700px;
+    margin-top:35px;
+    font-size:clamp(18px,3vw,25px);
+    line-height:1.5;
+}
+
+.ending-buttons{
+    display:flex;
+    gap:18px;
+    margin-top:35px;
+    flex-wrap:wrap;
+    justify-content:center;
+}
+
+.ending-buttons button{
+    border:1px solid rgba(255,255,255,.3);
+    background:rgba(255,255,255,.08);
+    color:white;
+    padding:15px 25px;
+    border-radius:40px;
+    font-size:16px;
+    cursor:pointer;
+    backdrop-filter:blur(10px);
+    transition:.3s;
+}
+
+.ending-buttons button:hover{
+    transform:scale(1.08);
+    background:rgba(255,255,255,.18);
+}
+
+#loveBtn,
+#okayBtn{
+    background:#e91d60;
+    border-color:#e91d60;
+    box-shadow:0 0 30px rgba(233,29,96,.4);
+}
+
+#okayBtn{
+    padding:17px 32px;
+}
+
+/* =========================
+   EU TE AMO
+========================= */
+
+.love-final{
+    font-size:clamp(35px,8vw,75px);
+    font-weight:bold;
+    text-shadow:
+        0 0 20px rgba(255,40,110,.8),
+        0 0 70px rgba(255,40,110,.5);
+    animation:lovePulse 1.5s infinite alternate;
+}
+
+.love-final span{
+    display:block;
+    margin-top:12px;
+}
+
+.small-final{
+    margin-top:25px;
+    font-size:clamp(17px,3vw,24px);
+    opacity:.85;
+}
+
+@keyframes lovePulse{
+    from{
+        transform:scale(1);
+    }
+    to{
+        transform:scale(1.06);
+    }
+}
+
+/* =========================
+   CONTAGEM
+========================= */
+
+.countdown{
+    font-size:clamp(100px,25vw,220px);
+    font-weight:bold;
+    text-shadow:
+        0 0 40px rgba(255,40,110,.8),
+        0 0 100px rgba(255,40,110,.5);
+    animation:countPulse .8s ease;
+}
+
+@keyframes countPulse{
+    0%{
+        transform:scale(.3);
+        opacity:0;
+    }
+    60%{
+        transform:scale(1.15);
+        opacity:1;
+    }
+    100%{
+        transform:scale(1);
+    }
+}
+
+/* =========================
+   EXPLOSÃO DE CORAÇÕES
+========================= */
+
+.explosion-heart{
+    position:absolute;
+    z-index:120;
+    color:#ff397d;
+    pointer-events:none;
+    transform:translate(-50%,-50%) scale(.2);
+    animation:
+        explodeHeart 2.6s
+        cubic-bezier(.15,.8,.2,1)
+        forwards;
+}
+
+@keyframes explodeHeart{
+    0%{
+        opacity:0;
+        transform:
+            translate(-50%,-50%)
+            scale(.2)
+            rotate(0deg);
+    }
+
+    12%{
+        opacity:1;
+        transform:
+            translate(-50%,-50%)
+            scale(1.4)
+            rotate(-10deg);
+    }
+
+    100%{
+        opacity:0;
+        transform:
+            translate(
+                calc(-50% + var(--x)),
+                calc(-50% + var(--y))
+            )
+            scale(.8)
+            rotate(360deg);
+    }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:600px){
+
+    .envelope{
+        width:85vw;
+        height:60vh;
+    }
+
+    .card-title{
+        font-size:23px;
+    }
+
+    .watermark{
+        font-size:9px;
+    }
+
+    .long-text{
+        padding:25px 20px 80px;
+    }
+
+    .long-content{
+        line-height:1.65;
+    }
+
+    .ending{
+        padding:25px 20px;
+    }
+
+    .ending-buttons{
+        width:100%;
+    }
+
+    .ending-buttons button{
+        min-width:210px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div id="app">
+
+<div class="glow"></div>
+
+<div class="star" style="left:8%;animation-delay:1s"></div>
+<div class="star" style="left:19%;animation-delay:4s"></div>
+<div class="star" style="left:34%;animation-delay:2s"></div>
+<div class="star" style="left:51%;animation-delay:5s"></div>
+<div class="star" style="left:68%;animation-delay:1.5s"></div>
+<div class="star" style="left:84%;animation-delay:3s"></div>
+<div class="star" style="left:94%;animation-delay:6s"></div>
+
+
+<!-- =========================
+     CARTA
+========================= -->
+
+<div class="card-scene">
+
+    <div class="envelope" id="envelope">
+
+        <div class="paper"></div>
+
+        <div class="flap"></div>
+
+        <div class="corner top-left"></div>
+        <div class="corner top-right"></div>
+        <div class="corner bottom-left"></div>
+        <div class="corner bottom-right"></div>
+
+        <div class="branch left"></div>
+        <div class="branch right"></div>
+
+        <div class="card-title">
+            Para Renata
+            <span>com amor, Thiago</span>
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     CORAÇÃO
+========================= -->
+
+<div class="heart-wrap" id="heart">
+    <div class="heart"></div>
+</div>
+
+
+<!-- =========================
+     FRASES
+========================= -->
+
+<div class="content">
+
+    <div class="phrase" id="phrase1">
+        3 coisas que eu queria viver com você...
+    </div>
+
+    <div class="phrase" id="phrase2">
+        Um domingo preguiçoso com você.
+    </div>
+
+    <div class="list-container" id="listContainer">
+        <div class="list-item" id="listItem"></div>
+    </div>
+
+    <div class="final" id="final">
+        hahaha você achou que seriam só 3 coisas??
+    </div>
+
+</div>
+
+
+<button class="start" id="start">
+    abrir minha carta
+</button>
+
+
+<div class="watermark">
+    De Thiago, para o amor da minha vida, Renata
+</div>
+
+</div>
+
+
+<script>
+
+const envelope = document.getElementById("envelope");
+const heart = document.getElementById("heart");
+const start = document.getElementById("start");
+
+const phrase1 = document.getElementById("phrase1");
+const phrase2 = document.getElementById("phrase2");
+
+const listContainer = document.getElementById("listContainer");
+const listItem = document.getElementById("listItem");
+
+const final = document.getElementById("final");
+
+const sleep = ms =>
+    new Promise(resolve => setTimeout(resolve, ms));
+
+
+/* =========================
+   LISTA
+========================= */
+
+const list = [
+
+"1. Acordar do seu lado.",
+"2. Fazer café da manhã juntos.",
+"3. Te olhar enquanto você sorri.",
+"4. Uma viagem sem pressa.",
+"5. Uma noite vendo filme agarradinhos.",
+"6. Dançar na cozinha.",
+"7. Comprar besteiras no mercado.",
+"8. Rir até a barriga doer.",
+"9. Fazer planos no meio da madrugada.",
+"10. Conhecer lugares novos com você.",
+"11. Voltar para casa de mãos dadas.",
+"12. Dividir uma sobremesa.",
+"13. Te abraçar depois de um dia difícil.",
+"14. Dormir ouvindo sua respiração.",
+"15. Cuidar de você quando estiver cansado.",
+"16. Te mandar mensagem só porque lembrei de você.",
+"17. Ter nossas piadas internas.",
+"18. Escolher um filme e não assistir nada.",
+"19. Ficar em silêncio sem ficar estranho.",
+"20. Viajar para a praia.",
+"21. Ver o pôr do sol juntos.",
+"22. Tirar fotos bobas.",
+"23. Planejar nosso cantinho.",
+"24. Decorar uma casa com a nossa cara.",
+"25. Fazer comida juntos.",
+"26. Errar a receita e rir disso.",
+"27. Ter uma música que seja nossa.",
+"28. Cantar no carro.",
+"29. Te esperar chegar.",
+"30. Chegar e te procurar primeiro.",
+"31. Fazer carinho no seu cabelo.",
+"32. Receber seu abraço do nada.",
+"33. Te ver feliz por coisas simples.",
+"34. Passar datas especiais juntos.",
+"35. Inventar nossas próprias tradições.",
+"36. Ter presentes com significado.",
+"37. Escrever cartas para você.",
+"38. Guardar bilhetes antigos.",
+"39. Passar um Natal ao seu lado.",
+"40. Começar um ano novo com você.",
+"41. Viajar sem roteiro.",
+"42. Fazer planos grandes.",
+"43. Realizar planos pequenos.",
+"44. Comer pizza no sofá.",
+"45. Ficar abraçado em dia de chuva.",
+"46. Te ouvir contar sobre seu dia.",
+"47. Ser seu descanso.",
+"48. Ter você como meu lugar seguro.",
+"49. Cuidar dos seus sonhos como se fossem meus.",
+"50. Comemorar suas conquistas.",
+"51. Te apoiar nos dias difíceis.",
+"52. Crescer junto com você.",
+"53. Aprender seus jeitos.",
+"54. Decorar suas manias.",
+"55. Amar suas chatices.",
+"56. Fazer seu sorriso aparecer entre lágrimas.",
+"57. Te acalmar quando o mundo pesar.",
+"58. Ser escolhido por você todos os dias.",
+"59. Escolher você todos os dias também.",
+"60. Fazer planos para o futuro.",
+"61. Viver o presente sem medo.",
+"62. Ter conversas boas.",
+"63. Rir de coisas que só a gente entende.",
+"64. Passar sem destino.",
+"65. Fazer uma viagem longa.",
+"66. Ter uma tarde inteira só nossa.",
+"67. Ir embora querendo ficar mais.",
+"68. Sentir saudade mesmo depois de pouco tempo.",
+"69. Te encontrar no meio da multidão.",
+"70. Fazer chamada só para ouvir sua voz.",
+"71. Dormir tarde falando de tudo.",
+"72. Te olhar e pensar: “é você”.",
+"73. Criar memórias que ninguém tira da gente.",
+"74. Ter fotos ruins que eu ame.",
+"75. Ter histórias para contar.",
+"76. Cuidar um do outro sem precisar pedir.",
+"77. Se cuidar um do outro sem precisar pedir.",
+"78. Ser abrigo.",
+"79. Ser parceria.",
+"80. Ser paz.",
+"81. Ser amor leve.",
+"82. Ser amor intenso.",
+"83. Ser nós dois contra qualquer fase ruim.",
+"84. Envelhecer lembrando de tudo.",
+"85. Olhar para trás e sorrir.",
+"86. Construir uma vida bonita.",
+"87. Ter orgulho da nossa história.",
+"88. Fazer valer a pena.",
+"89. Viver dias comuns que pareçam especiais.",
+"90. Transformar rotina em carinho.",
+"91. Te escolher até nos dias difíceis.",
+"92. Te amar sem precisar de plateia.",
+"93. Ser feliz no nosso off.",
+"94. Ter você no nosso off.",
+"95. Ter você nos dias em que eu mais precisar.",
+"96. Continuar me apaixonando.",
+"97. Viver uma vida inteira ao seu lado.",
+"98. E mesmo assim achar que foi pouco.",
+"99. E mesmo assim achar que foi pouco."
+
+];
+
+
+/* =========================
+   MOSTRAR FRASE
+========================= */
+
+async function showPhrase(element,time){
+
+    element.classList.remove("hide");
+
+    void element.offsetWidth;
+
+    element.classList.add("show");
+
+    await sleep(time);
+
+    element.classList.remove("show");
+    element.classList.add("hide");
+
+    await sleep(1000);
+
+    element.classList.remove("hide");
+}
+
+
+/* =========================
+   LISTA 1-99
+========================= */
+
+async function showList(){
+
+    listContainer.classList.add("show");
+
+    await sleep(1300);
+
+    for(let i = 0; i < list.length; i++){
+
+        listItem.textContent = list[i];
+
+        listItem.classList.remove("hide");
+
+        void listItem.offsetWidth;
+
+        listItem.classList.add("show");
+
+        const duration =
+            list[i].length > 55
+            ? 3000
+            : 2400;
+
+        await sleep(duration);
+
+        listItem.classList.remove("show");
+        listItem.classList.add("hide");
+
+        await sleep(700);
+
+        listItem.classList.remove("hide");
+    }
+
+    listContainer.classList.remove("show");
+
+    await sleep(1200);
+
+    final.textContent =
+        "hahaha você achou que seriam só 3 coisas??";
+
+    final.classList.remove("hide");
+    final.classList.add("show");
+
+    await sleep(3200);
+
+    final.classList.remove("show");
+    final.classList.add("hide");
+
+    await sleep(1200);
+
+    final.classList.remove("hide");
+
+    showLongText();
+}
+
+
+/* =========================
+   TEXTÃO
+========================= */
+
+async function showLongText(){
+
+    const longText =
+        document.createElement("div");
+
+    longText.className = "long-text";
+
+    longText.innerHTML = `
+
+        <div class="long-title">
+            Antes de terminar...
+        </div>
+
+        <div class="long-content">
+
+Eu sei que 100 pode ser pouco,
+mas é só uma fraçãozinha do quanto
+eu amo você, meu amor.
+
+Eu poderia passar horas escrevendo
+sobre tudo que eu sinto por você
+e ainda assim provavelmente
+não conseguiria explicar direito.
+
+Porque você se tornou uma parte
+muito importante da minha vida.
+
+Eu quero viver momentos simples
+com você, momentos grandes,
+momentos engraçados, momentos
+que talvez nem façam sentido
+para mais ninguém.
+
+Quero continuar criando memórias
+com você e, principalmente,
+quero continuar escolhendo você.
+
+Talvez eu não saiba dizer tudo
+do jeito perfeito, mas espero
+que você consiga sentir em cada
+palavra o quanto você é importante
+pra mim.
+
+Eu te amo, Renata.
+
+        </div>
+
+        <button class="continue-btn" id="continueBtn">
+            continuar
+        </button>
+    `;
+
+    document
+        .getElementById("app")
+        .appendChild(longText);
+
+    await sleep(300);
+
+    longText.classList.add("show");
+
+    document
+        .getElementById("continueBtn")
+        .addEventListener(
+            "click",
+            showEnding
+        );
+}
+
+
+/* =========================
+   FINAL
+========================= */
+
+async function showEnding(){
+
+    const old =
+        document.querySelector(".long-text");
+
+    if(old){
+
+        old.classList.remove("show");
+
+        await sleep(800);
+
+        old.remove();
+    }
+
+    const ending =
+        document.createElement("div");
+
+    ending.className = "ending";
+
+    ending.innerHTML = `
+
+        <div class="ending-title">
+            E é isso, amor.
+        </div>
+
+        <div class="ending-text">
+            Espero que você tenha gostado
+            de cada pedacinho disso que fiz pra você.
+        </div>
+
+        <div class="ending-question">
+            Se você gostou, fala que me ama
+            com todas as letras em MAIÚSCULO.
+        </div>
+
+        <div class="ending-buttons">
+
+            <button id="loveBtn">
+                EU TE AMO
+            </button>
+
+            <button id="audioBtn">
+                MANDAR UM ÁUDIO
+            </button>
+
+        </div>
+    `;
+
+    document
+        .getElementById("app")
+        .appendChild(ending);
+
+    await sleep(300);
+
+    ending.classList.add("show");
+
+    document
+        .getElementById("loveBtn")
+        .addEventListener(
+            "click",
+            loveEnding
+        );
+
+    document
+        .getElementById("audioBtn")
+        .addEventListener(
+            "click",
+            playfulQuestion
+        );
+}
+
+
+/* =========================
+   EU TE AMO
+========================= */
+
+async function loveEnding(){
+
+    const ending =
+        document.querySelector(".ending");
+
+    ending.innerHTML = `
+
+        <div class="love-final">
+            EU TAMBÉM TE AMO,
+            <span>RENATA.</span>
+        </div>
+
+    `;
+
+    await sleep(500);
+
+    heartExplosion();
+}
+
+
+/* =========================
+   SEGUNDA PERGUNTA
+========================= */
+
+async function playfulQuestion(){
+
+    const ending =
+        document.querySelector(".ending");
+
+    ending.innerHTML = `
+
+        <div class="ending-title">
+            Tudo bem, amor...
+        </div>
+
+        <div class="ending-text">
+
+            Eu deixo você escolher
+            uma coisinha especial
+            pra me mandar...
+
+        </div>
+
+        <div class="ending-question">
+
+            Você sabe muito bem qual tipo
+            de surpresa eu gosto muito,
+            muito, muito.
+
+            <br><br>
+
+            Então...
+            vai deixar meu dia mais feliz?
+
+        </div>
+
+        <div class="ending-buttons">
+
+            <button id="okayBtn">
+                TÁ BOMM MEU BB
+            </button>
+
+        </div>
+
+    `;
+
+    await sleep(500);
+
+    ending.classList.add("question-mode");
+
+    document
+        .getElementById("okayBtn")
+        .addEventListener(
+            "click",
+            finalExplosion
+        );
+}
+
+
+/* =========================
+   CONTAGEM
+========================= */
+
+async function finalExplosion(){
+
+    const ending =
+        document.querySelector(".ending");
+
+    ending.innerHTML = `
+
+        <div class="countdown" id="countdown">
+            3
+        </div>
+
+    `;
+
+    const countdown =
+        document.getElementById("countdown");
+
+    await sleep(900);
+
+    countdown.textContent = "2";
+
+    await sleep(900);
+
+    countdown.textContent = "1";
+
+    await sleep(900);
+
+    countdown.textContent = "♡";
+
+    await sleep(500);
+
+    heartExplosion();
+
+    await sleep(1800);
+
+    ending.innerHTML = `
+
+        <div class="love-final">
+            EU TE AMO DEMAIS,
+            <span>RENATA.</span>
+        </div>
+
+        <div class="small-final">
+            e faria tudo isso de novo
+            só pra ver você sorrir.
+        </div>
+
+    `;
+}
+
+
+/* =========================
+   EXPLOSÃO DE CORAÇÕES
+========================= */
+
+function heartExplosion(){
+
+    const app =
+        document.getElementById("app");
+
+    for(let i = 0; i < 100; i++){
+
+        const heart =
+            document.createElement("div");
+
+        heart.className =
+            "explosion-heart";
+
+        heart.innerHTML =
+            Math.random() > .35
+            ? "♥"
+            : "♡";
+
+        const angle =
+            Math.random() *
+            Math.PI *
+            2;
+
+        const distance =
+            300 +
+            Math.random() * 900;
+
+        const x =
+            Math.cos(angle) *
+            distance;
+
+        const y =
+            Math.sin(angle) *
+            distance;
+
+        heart.style.left = "50%";
+        heart.style.top = "50%";
+
+        heart.style.setProperty(
+            "--x",
+            x + "px"
+        );
+
+        heart.style.setProperty(
+            "--y",
+            y + "px"
+        );
+
+        heart.style.fontSize =
+            (18 + Math.random() * 38) +
+            "px";
+
+        heart.style.animationDelay =
+            (Math.random() * .35) +
+            "s";
+
+        app.appendChild(heart);
+
+        setTimeout(() => {
+            heart.remove();
+        }, 3200);
+    }
+}
+
+
+/* =========================
+   EXPERIÊNCIA PRINCIPAL
+========================= */
+
+async function experience(){
+
+    start.classList.add("hide");
+
+    await sleep(500);
+
+    /* 1 - CARTA ABRINDO */
+
+    envelope.classList.add("open");
+
+    await sleep(1900);
+
+    /* 2 - CORAÇÃO APARECE */
+
+    heart.classList.add("show");
+
+    await sleep(2300);
+
+    /* 3 - CÂMERA ENTRA NO CORAÇÃO */
+
+    heart.classList.remove("show");
+
+    heart.classList.add("enter");
+
+    await sleep(3300);
+
+    /* 4 - 3 COISAS */
+
+    await showPhrase(
+        phrase1,
+        3200
+    );
+
+    /* 5 - DOMINGO */
+
+    await showPhrase(
+        phrase2,
+        3200
+    );
+
+    /* 6 - PEGADINHA */
+
+    final.textContent =
+        "hahaha você achou que seriam só 3 coisas??";
+
+    final.classList.add("show");
+
+    await sleep(3200);
+
+    final.classList.remove("show");
+    final.classList.add("hide");
+
+    await sleep(1100);
+
+    final.classList.remove("hide");
+
+    /* 7 - FRASE DOS 100 */
+
+    final.textContent =
+        "Eu sei que 100 pode ser pouco, mas é só uma fraçãozinha do quanto eu amo você, meu amor.";
+
+    final.classList.add("show");
+
+    await sleep(4300);
+
+    final.classList.remove("show");
+    final.classList.add("hide");
+
+    await sleep(1100);
+
+    final.classList.remove("hide");
+
+    /* 8 - LISTA */
+
+    await showList();
+}
+
+
+start.addEventListener(
+    "click",
+    experience
+);
+
+</script>
+
+</body>
+</html>
